@@ -34,6 +34,10 @@ public class ToDoService {
         }
     }
 
+    public Todos saveUpdatedUser(Todos todos){
+       return toDoRepository.save(todos);
+    }
+
     public void deleteTodo(Todos entity){
          toDoRepository.delete(entity);
     }

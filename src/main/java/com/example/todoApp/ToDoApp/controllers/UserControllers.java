@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -31,10 +33,13 @@ public class UserControllers {
         return userService.getAll();
     }
 
-    @PutMapping("/{userEmail}")
-    public ResponseEntity<?> updateUser(@RequestBody User user,@PathVariable String userEmail){
-       User userInDB = userService.findByUserEmail(userEmail);
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody User user){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+       User userInDB = userService.findByUserEmail(userName);
        if(userInDB!=null){
+           userInDB.setName(user.getName());
            userInDB.setUserEmail(user.getUserEmail());
            userInDB.setPassword(user.getPassword());
            userService.saveEntry(userInDB);

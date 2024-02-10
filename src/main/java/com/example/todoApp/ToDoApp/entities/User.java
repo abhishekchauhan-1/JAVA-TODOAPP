@@ -23,6 +23,9 @@ public class User {
     @NonNull
     @Indexed(unique = true)
     private String userEmail;
+
+    private String name;
+
     @NonNull
     private String password;
 

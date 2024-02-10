@@ -52,6 +52,28 @@ public class TodoControllers {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+
+    @PutMapping("/{todoId}")
+    public ResponseEntity<?> updateTodo(@PathVariable ObjectId todoId, @RequestBody Todos newTodos) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        Todos oldTodos = toDoService.findById(todoId);
+
+        if (oldTodos != null) {
+            oldTodos.setTitle(newTodos.getTitle() != null ? newTodos.getTitle() : oldTodos.getTitle());
+            oldTodos.setDescription(newTodos.getDescription() != null ? newTodos.getDescription() : oldTodos.getDescription());
+            oldTodos.setDueDate(newTodos.getDueDate() != null ? newTodos.getDueDate() : oldTodos.getDueDate());
+            oldTodos.setStatus(newTodos.isStatus() != oldTodos.isStatus() ? newTodos.isStatus() : oldTodos.isStatus());
+
+            Todos updatedTodo = toDoService.saveUpdatedUser(oldTodos);
+
+            return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+
     @DeleteMapping("/{todoId}")
     public ResponseEntity<String> deleteTodos(@PathVariable ObjectId todoId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

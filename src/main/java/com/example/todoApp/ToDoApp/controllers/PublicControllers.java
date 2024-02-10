@@ -3,6 +3,7 @@ package com.example.todoApp.ToDoApp.controllers;
 import com.example.todoApp.ToDoApp.Security.JwtHelper;
 import com.example.todoApp.ToDoApp.entities.JWTRequest;
 import com.example.todoApp.ToDoApp.entities.User;
+import com.example.todoApp.ToDoApp.repositories.UserRepository;
 import com.example.todoApp.ToDoApp.services.UserDetailsServiceImpl;
 import com.example.todoApp.ToDoApp.services.UserService;
 import org.bson.types.ObjectId;
@@ -31,6 +32,9 @@ public class PublicControllers {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private AuthenticationManager manager;
 
     @Autowired
@@ -42,7 +46,7 @@ public class PublicControllers {
     private Logger logger = LoggerFactory.getLogger(UserControllers.class);
 
     @PostMapping("/create-user")
-    public boolean saveUser(@RequestBody User user){
+    public boolean saveUser(@RequestBody User user) {
         userService.saveEntry(user);
         return true;
     }
@@ -50,12 +54,15 @@ public class PublicControllers {
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody JWTRequest request) {
         this.doAuthenticate(request.getUserEmail(), request.getPassword());
-
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUserEmail());
         String token = this.helper.generateToken(userDetails);
 
+        User dbUser = userRepository.findByUserEmail(request.getUserEmail());
+
+
         User response = User.builder()
                 .id(new ObjectId())
+                .name(dbUser != null ? dbUser.getName() : null)
                 .userEmail(userDetails.getUsername())
                 .password(userDetails.getPassword())
                 .todos(new ArrayList<>())
@@ -68,17 +75,11 @@ public class PublicControllers {
 
 
     private void doAuthenticate(String email, String password) {
-
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
         try {
             manager.authenticate(authentication);
-
-
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
-
     }
-
-
 }
