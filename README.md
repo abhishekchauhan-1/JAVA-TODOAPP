@@ -1,5 +1,5 @@
 
-```markdown
+
 # ToDoApp
 
 ToDoApp is a simple web application for managing your to-do tasks. It provides endpoints to create, update, retrieve, and delete tasks for authenticated users. The application is secured using JSON Web Tokens (JWT) for user authentication.
@@ -61,7 +61,7 @@ ToDoApp is a simple web application for managing your to-do tasks. It provides e
     - `POST /public/create-user`: Create a new user (Signup).
         - **Description:** Used for user registration. Requires a JSON payload with user details.
         - **Request Example:**
-          ```json
+          ```
           {
             "name": "John Doe",
             "userEmail": "john@example.com",
@@ -72,7 +72,7 @@ ToDoApp is a simple web application for managing your to-do tasks. It provides e
     - `POST /public/login`: Authenticate and obtain a JWT token (Login).
         - **Description:** Used for user login. Requires a JSON payload with user credentials.
         - **Request Example:**
-          ```json
+          ```
           {
             "userEmail": "john@example.com",
             "password": "password123"
@@ -83,7 +83,7 @@ ToDoApp is a simple web application for managing your to-do tasks. It provides e
     - `POST /todos`: Create a new ToDo task.
         - **Description:** Used to add a new task to the authenticated user's to-do list. Requires a JSON payload with task details.
         - **Request Example:**
-          ```json
+          ```
           {
             "title": "Task 1",
             "description": "Complete Task 1",
@@ -98,7 +98,7 @@ ToDoApp is a simple web application for managing your to-do tasks. It provides e
     - `PUT /todos/{todoId}`: Update an existing ToDo task.
         - **Description:** Modifies the details of an existing task identified by `todoId`. Requires a JSON payload with updated task details.
         - **Request Example:**
-          ```json
+          ```
           {
             "title": "Updated Task 1",
             "description": "Updated description",
@@ -117,7 +117,7 @@ ToDoApp is a simple web application for managing your to-do tasks. It provides e
     - `PUT /User`: Update user details.
         - **Description:** Modifies user details for the currently authenticated user. Requires a JSON payload with updated user details.
         - **Request Example:**
-          ```json
+          ```
           {
             "name": "Updated Name",
             "userEmail": "updated.email@example.com",
@@ -128,5 +128,3 @@ ToDoApp is a simple web application for managing your to-do tasks. It provides e
 ## Author
 
 Abhishek Singh Chauhan
-```
-
